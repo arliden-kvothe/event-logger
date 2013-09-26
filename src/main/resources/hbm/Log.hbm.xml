@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.blackthorne.trader.eventlogger.db.Log" table="`event_log`">
+		<id name="id" column="`event_log_id`" type="java.lang.Integer">
+			<generator class="increment" />
+		</id>
+
+		<property name="dateTime" column="`event_dt`" type="java.sql.Timestamp" not-null="true" />
+		<property name="comments" column="`event`" type="java.lang.String" />
+		<property name="fileSize" column="`file_size`" type="java.lang.Integer" />
+		<property name="custom1" column="`custom1`" type="java.lang.String" />
+		<property name="custom2" column="`custom2`" type="java.lang.String" />
+		<property name="custom3" column="`custom3`" type="java.lang.String" />
+
+		<!-- Relationships to one instance of -->
+		<many-to-one name="system" column="`system_id`" lazy="false"
+			class="com.blackthorne.trader.eventlogger.db.System" />
+		<many-to-one name="event" column="`event_id`" lazy="false"
+			class="com.blackthorne.trader.eventlogger.db.Event" />
+
+
+	</class>
+
+
+	<!-- Queries -->
+	<sql-query name="log.rows">
+		<return alias="data" class="com.blackthorne.trader.eventlogger.db.Log" />
+	<![CDATA[
+		select * from `event_log` 
+		where `event_dt` >= DATE(NOW() - INTERVAL 3 DAY) 
+		order by `event_dt` desc;]]>
+	</sql-query>
+
+	<sql-query name="log.rows.admin">
+		<return alias="data" class="com.blackthorne.trader.eventlogger.db.Log" />
+	<![CDATA[
+		select * from `event_log` 
+		where `event_id` = 1
+		and `event_dt` >= DATE(NOW() - INTERVAL 6 DAY) 
+		order by `event_dt` desc;]]>
+	</sql-query>
+
+</hibernate-mapping>
+

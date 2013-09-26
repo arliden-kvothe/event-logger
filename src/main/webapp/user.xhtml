@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Event logger</title>
+	<script type="text/javascript">
+	  $(document).ready(function() {
+	        $('#sizeFile').bind("cut copy paste",function(e) {
+	            e.preventDefault();
+	        });
+	     });
+	</script>
+	<link rel="stylesheet" href="css/layout.css"/>
+</h:head>
+<body>
+
+	<h:form id="form" prependId="false">
+	
+		<h:outputLink value="#{request.contextPath}/logout">Sign out</h:outputLink>
+
+		<p:dataTable id="dataTable" var="log" value="#{utilBean.logs}"
+			paginator="true" rows="50"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="25,50,100">
+			<f:facet name="header">
+            	Recent logs in System
+        	</f:facet>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Event" />
+				</f:facet>
+				<h:outputText value="#{log.event.description}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="System" />
+				</f:facet>
+				<h:outputText value="#{log.system.description}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="User" />
+				</f:facet>
+				<h:outputText value="#{log.custom1}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText value="#{log.comments}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="File Size" />
+				</f:facet>
+				<h:outputText value="#{log.fileSize}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="DateTime" />
+				</f:facet>
+				<h:outputText value="#{log.dateTime}" />
+			</p:column>
+		</p:dataTable>
+
+		<p:panel id="panel" header="Define the size of the file">
+			<h:panelGrid columns="4">
+				<h:outputLabel for="sizeFile" value="Size: " />
+				<p:inputText id="sizeFile" value="#{utilBean.fileSize}"
+					required="true" mask="9?9999" label="SizeFile">
+				</p:inputText>
+
+
+				<h:outputText value="System: " />
+				<p:selectOneMenu value="#{utilBean.systemId}" effect="fade">
+					<f:selectItems value="#{utilBean.systems}" var="sys"
+						itemLabel="#{sys.description}" itemValue="#{sys.id}" />
+				</p:selectOneMenu>
+
+				<h:outputLabel for="comments" value="Comments: " />
+				<p:inputText id="comments" value="#{utilBean.comments}"
+					required="true" label="Comments">
+				</p:inputText>
+				<p:message for="comments" display="icon" />
+
+
+			</h:panelGrid>
+			<p:commandButton id="btn" value="Save" update="panel"
+				actionListener="#{utilBean.save}" />
+
+		</p:panel>
+		<p:messages id="errorMsg" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+	</h:form>
+
+</body>
+</html>

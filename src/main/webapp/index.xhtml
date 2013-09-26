@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Event logger</title>
+</h:head>
+<body>
+	<h:form id="loginForm">
+		<p:messages id="errorMsg" showDetail="true" autoUpdate="true"
+			closable="true" />
+		<p:panel id="panel" header="Please type your user and password"
+			footer="">
+			<h:panelGrid columns="3">
+				<h:outputLabel for="username" value="Username: " />
+				<p:inputText id="username" value="#{personBean.username}"
+					required="true" label="UserName" />
+				<p:message for="username" display="icon" />
+
+				<h:outputLabel for="password" value="Password: " />
+				<p:password id="password" value="#{personBean.password}"
+					label="Password" required="true">
+
+					<p:ajax update="msgPassword" event="keyup" />
+				</p:password>
+				<p:message for="password" id="msgPassword" display="icon" />
+
+			</h:panelGrid>
+			<p:commandButton id="btn" value="Enter" update="panel"
+				actionListener="#{personBean.validateUser}" />
+		</p:panel>
+
+	</h:form>
+</body>
+</html>

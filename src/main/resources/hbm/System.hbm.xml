@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.blackthorne.trader.eventlogger.db.System" table="`systems`">
+		<id name="id" column="`system_id`" type="java.lang.Integer">
+			<generator class="increment" />
+		</id>
+		
+		<property name="description"
+		          column="`description`"
+		          type="java.lang.String"
+		          not-null="true"/>
+		          
+		<property name="custom1"
+		          column="`custom1`"
+		          type="java.lang.String"/>
+
+	</class>
+
+
+	<!-- Queries -->
+	<query name="system.rows">
+			<![CDATA[from System]]>
+	</query>
+	
+</hibernate-mapping>
+

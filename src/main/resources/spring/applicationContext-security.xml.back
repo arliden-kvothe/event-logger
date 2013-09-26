@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security
+                         http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<global-method-security secured-annotations="enabled" />
+
+	<http auto-config="true">
+		<intercept-url pattern="/login.xhtml" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!-- <intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/images/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> -->
+		
+		<intercept-url pattern="/admin.xhtml" access="ROLE_ADMIN" />
+		<intercept-url pattern="/user.xhtml" access="ROLE_USER" />
+
+		<form-login login-page="/login.xhtml"
+					authentication-failure-url="/login.xhtml"
+					login-processing-url="" 
+					authentication-success-handler-ref="loginSuccessHandler" />
+					
+		<logout logout-url="/logout.xhtml" logout-success-url="/login.xhtml" />
+		
+		<remember-me />
+		
+		<access-denied-handler ref="eventLoggerAccessDeniedHandler"></access-denied-handler>
+
+	</http>	
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider>
+			<user-service>
+				<user name="rod" password="rod" authorities="ROLE_ADMIN,ROLE_USER" />
+				<user name="dianne" password="dianne" authorities="ROLE_ADMIN,ROLE_USER" />
+				<user name="scott" password="scott" authorities="ROLE_USER" />
+				<user name="peter" password="peter" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+		<!-- <authentication-provider ref="rememberMeAuthenticationProvider" /> -->
+	</authentication-manager>
+	
+	<!-- Uses a database table to maintain a set of persistent login data -->
+	<!-- <beans:bean id="jdbcTokenRepository"
+				class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+		<beans:property name="createTableOnStartup" value="false"></beans:property>
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+	</beans:bean> -->
+	
+	<!-- Defines which remember me implementation to use - in this case using a database table to log 'remembered' tokens -->
+	<!-- <beans:bean id="rememberMeServices"
+				class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+		<beans:property name="tokenRepository" ref="jdbcTokenRepository"></beans:property>
+		<beans:property name="userDetailsService" ref="customUserDetailsService"></beans:property>
+		<beans:property name="tokenValiditySeconds" value="864000"></beans:property>
+		<beans:property name="cookieName" value="SPRING_RM"></beans:property>
+		<beans:property name="key" value="myAppKey"></beans:property>
+	</beans:bean> -->
+	
+	<!-- This ensures that remember-me is added as an authentication provider -->
+	<!-- <beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:property name="key" value="myAppKey"></beans:property>
+	</beans:bean>
+	<beans:bean id="rememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+	</beans:bean> -->
+	
+</beans:beans>

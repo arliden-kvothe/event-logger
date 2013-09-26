@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Event logger</title>
+</h:head>
+<body>
+
+	<h:form prependId="false">
+	
+		<h:outputLink value="#{request.contextPath}/logout">Sign out</h:outputLink>
+
+		<p:dataTable id="dataTable" var="log" value="#{utilBean.adminReviews}"
+			paginator="true" rows="20"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+			<f:facet name="header">
+            	Recent logs in System
+        	</f:facet>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="System" />
+				</f:facet>
+				<h:outputText value="#{log.system.description}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="User" />
+				</f:facet>
+				<h:outputText value="#{log.custom1}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText value="#{log.comments}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="DateTime" />
+				</f:facet>
+				<h:outputText value="#{log.dateTime}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Size of File" />
+				</f:facet>
+				<h:outputText value="#{log.fileSize}" />
+			</p:column>
+
+			
+		</p:dataTable>
+
+	</h:form>
+
+</body>
+</html>
