@@ -9,16 +9,16 @@
 
 	<global-method-security secured-annotations="enabled" />
 
-	<http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint">
+	<http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint" access-decision-manager-ref="accessDecisionManager">
 		<custom-filter position="FORM_LOGIN_FILTER" ref="eventLoggerLoginFilter" />
 		<custom-filter position="LOGOUT_FILTER" ref="eventLoggerLogoutFilter" />
 		<!-- <custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" /> -->
-		
 		<intercept-url pattern="/login.xhtml" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/save.xhtml" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/javax.faces.resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/admin.xhtml" access="ROLE_ADMIN" />
-		<intercept-url pattern="/user.xhtml" access="ROLE_USER" />
+		<intercept-url pattern="/admin.xhtml" access="EVTLOG_MANAGER,EVTLOG_DATALOAD" />
+		<intercept-url pattern="/user.xhtml" access="EVTLOG_OPERATOR" />
 		<intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
 		<access-denied-handler ref="eventLoggerAccessDeniedHandler" />
 		<!-- <logout invalidate-session="true" delete-cookies="true" logout-success-url="/login.xhtml" /> -->
@@ -43,7 +43,7 @@
 		<beans:property name="loginFormUrl" value="/login.xhtml" />
 	</beans:bean>
 
-	<authentication-manager alias="authenticationManager">
+	<!-- <authentication-manager alias="authenticationManager">
 		<authentication-provider>
 			<user-service>
 				<user name="rod" password="rod" authorities="ROLE_ADMIN,ROLE_USER" />
@@ -52,8 +52,8 @@
 				<user name="peter" password="peter" authorities="ROLE_USER" />
 			</user-service>
 		</authentication-provider>
-		<!-- <authentication-provider ref="rememberMeAuthenticationProvider" /> -->
-	</authentication-manager>
+		<authentication-provider ref="rememberMeAuthenticationProvider" />
+	</authentication-manager> -->
 	
 	<!-- Filters -->
  	<!-- custom-filter position="REMEMBER_ME_FILTER"/ -->

@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-
+<!-- This file must be deleted -->
 	<session-factory>
 
 		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>

@@ -1,5 +1,6 @@
 package com.blackthorne.trader.eventlogger.service.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,16 @@ public class LogServiceImpl implements LogService {
 	@Transactional(readOnly = true)
 	public Log get(Integer id) {
 		return logDAO.get(id);
+	}
+
+	/**
+	 * 
+	 * @see com.blackthorne.trader.eventlogger.service.LogService#getRowsByGroups(java.util.List)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<Log> getRowsByGroups(Collection<String> groups) {
+		return logDAO.getRowsByGroups(groups);
 	}
 
 }

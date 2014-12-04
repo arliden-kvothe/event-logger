@@ -1,5 +1,6 @@
 package com.blackthorne.trader.eventlogger.dao.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -32,7 +33,6 @@ public class LogDAOImpl implements LogDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Log> getRows() {
-		
 		Query q = sessionFactory.getCurrentSession().getNamedQuery("log.rows");		
 		List<Log> result = q.list();
 		return result;
@@ -54,16 +54,38 @@ public class LogDAOImpl implements LogDAO {
 
 	}
 
+	/**
+	 * 
+	 * @see com.blackthorne.trader.eventlogger.dao.LogDAO#getAdminReviews()
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Log> getAdminReviews() {
-		
 		Query q = sessionFactory.getCurrentSession().getNamedQuery("log.rows.admin");
 		List<Log> result = q.list();
 		return result;
 	}
 
+	/**
+	 * 
+	 * @see com.blackthorne.trader.eventlogger.dao.DAO#get(java.lang.Integer)
+	 */
+	@Override
 	public Log get(Integer id) {
 		return (Log) sessionFactory.getCurrentSession().get(Log.class, id);
+	}
+
+	/**
+	 * 
+	 * @see com.blackthorne.trader.eventlogger.dao.LogDAO#getRowsByGroups(java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Log> getRowsByGroups(Collection<String> groups) {
+		Query q = sessionFactory.getCurrentSession()
+				.getNamedQuery("log.rowsByGroups")
+				.setParameterList("groups", groups);		
+		List<Log> result = q.list();
+		return result;
 	}
 
 }

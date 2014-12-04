@@ -3,6 +3,7 @@ package com.blackthorne.trader.eventlogger.beans;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -11,9 +12,13 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.TransactionException;
 import org.primefaces.context.RequestContext;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.blackthorne.trader.eventlogger.db.Log;
 import com.blackthorne.trader.eventlogger.db.System;
@@ -32,7 +37,7 @@ import com.blackthorne.trader.eventlogger.util.HibernateUtil;
 public class UtilBean implements Serializable {
 	private static final long serialVersionUID = -4669410611054037778L;
 	
-	private static final Logger log = Logger.getLogger(UtilBean.class);
+	private static final Logger logger = Logger.getLogger(UtilBean.class);
 
 	private List<Log> logs;
 	private List<Log> adminReviews;
@@ -67,8 +72,8 @@ public class UtilBean implements Serializable {
 			else
 				HibernateUtil.getSessionFactory().getCurrentSession().getTransaction().begin();
 		} catch (TransactionException e) {
-			log.error("********** An error occurred in the transaction **********", e);
-			log.info("Retrying....");
+			logger.error("********** An error occurred in the transaction **********", e);
+			logger.info("Retrying....");
 			HibernateUtil.getSessionFactory().getCurrentSession().close();
 			HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
 			HibernateUtil.getSessionFactory().getCurrentSession().createSQLQuery("select 1").list();
@@ -126,8 +131,9 @@ public class UtilBean implements Serializable {
 	 * Method to retrieve all {@link Log}s from dataBase
 	 */
 	public List<Log> getLogs() {
-		log.debug("logService = " + logService);
-		logs = logService.getRows();
+		Set<String> authorities = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		logger.debug("authorities = [" + authorities + "]");
+		logs = logService.getRowsByGroups(authorities);
 		return logs;
 	}
 
@@ -256,8 +262,7 @@ public class UtilBean implements Serializable {
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", e
-							.getMessage()));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", e.getMessage()));
 		}
 
 	}

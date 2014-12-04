@@ -13,6 +13,7 @@
 			classpath:spring/applicationContext.xml
 			classpath:spring/applicationContext-db.xml
 			classpath:spring/applicationContext-security.xml
+			classpath:spring/applicationContext-security-ldap.xml
 		</param-value>
 	</context-param>
 	<listener>

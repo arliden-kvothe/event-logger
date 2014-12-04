@@ -1,5 +1,6 @@
 package com.blackthorne.trader.eventlogger.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.blackthorne.trader.eventlogger.db.Log;
@@ -12,5 +13,7 @@ import com.blackthorne.trader.eventlogger.db.Log;
 public interface LogDAO extends DAO<Log> {
 	
 	List<Log> getAdminReviews();
+	
+	List<Log> getRowsByGroups(Collection<String> groups);
 	
 }

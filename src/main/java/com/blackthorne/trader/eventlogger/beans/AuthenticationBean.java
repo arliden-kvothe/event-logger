@@ -13,8 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.log4j.Logger;
-
 import com.blackthorne.trader.eventlogger.service.AuthenticationService;
 
 /**
@@ -30,8 +28,6 @@ public class AuthenticationBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 7701222798838739732L;
 	
-	private static final Logger log = Logger.getLogger(AuthenticationBean.class);
-
 	private String username = "";
 	private String password = "";
 	private boolean rememberMe = false;
@@ -41,11 +37,7 @@ public class AuthenticationBean implements Serializable {
 	private AuthenticationService authenticationService;
 
 	public String login() throws IOException, ServletException {
-		log.debug("dentro de AuthenticationBean.login");
-		log.info("Start login sequence");
-		log.info("Credentials: " + username + ":" + password + ", rememberMe:" + rememberMe);
-		//do any job with the associated values that you've got from the user, like persisting attempted login, etc.
-	    FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesContext facesContext = FacesContext.getCurrentInstance();
 	    ExternalContext extenalContext = facesContext.getExternalContext();
 	    RequestDispatcher dispatcher = ((ServletRequest)extenalContext.getRequest()).getRequestDispatcher("/j_spring_security_check");
 	    dispatcher.forward((ServletRequest)extenalContext.getRequest(), (ServletResponse)extenalContext.getResponse());

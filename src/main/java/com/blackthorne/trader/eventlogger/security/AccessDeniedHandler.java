@@ -33,10 +33,10 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
 		Set<String> authorities = 
 				AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		
-		if (authorities.contains(UserRole.ROLE_ADMIN.toString())) {
-			url = request.getContextPath() + "/admin.xhtml";
-		} else {
+		if (authorities.contains(UserRole.EVTLOG_OPERATOR.toString())) {
 			url = request.getContextPath() + "/user.xhtml";
+		} else {
+			url = request.getContextPath() + "/admin.xhtml";
 		}
 
 		request.getSession().setAttribute("url", url);

@@ -46,10 +46,10 @@ public class EventLoggerLoginFilter extends UsernamePasswordAuthenticationFilter
 				log.debug("user already authenticated!");
 				Set<String> authorities = AuthorityUtils.authorityListToSet(authenticate.getAuthorities());
 				String home;
-				if (authorities.contains(UserRole.ROLE_ADMIN.toString())) {
-					home = "/admin.xhtml";
-				} else {
+				if (authorities.contains(UserRole.EVTLOG_OPERATOR.toString())) {
 					home = "/user.xhtml";
+				} else {
+					home = "/admin.xhtml";
 				}
 				response.sendRedirect(request.getContextPath() + home);
 				return;

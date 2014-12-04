@@ -11,8 +11,17 @@
 <body>
 
 	<h:form prependId="false">
-	
-		<h:outputLink value="#{request.contextPath}/logout">Sign out</h:outputLink>
+
+		<h:outputLink value="#{request.contextPath}/logout"
+			style="position: absolute;
+			font-family: 'Segoe UI', Verdana, Arial, sans-serif;
+			color: #eeffee;
+			text-decoration: none;
+			font-size: 16px;
+			right: 30px;
+			margin-top: 0.1em;">
+				Sign out
+		</h:outputLink>
 
 		<p:dataTable id="dataTable" var="log" value="#{utilBean.adminReviews}"
 			paginator="true" rows="20"

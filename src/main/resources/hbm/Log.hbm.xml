@@ -31,8 +31,19 @@
 		<return alias="data" class="com.blackthorne.trader.eventlogger.db.Log" />
 	<![CDATA[
 		select * from `event_log` 
-		where `event_dt` >= DATE(NOW() - INTERVAL 3 DAY) 
+		where `event_dt` >= DATE(NOW() - INTERVAL 3 DAY)
 		order by `event_dt` desc;]]>
+	</sql-query>
+	<sql-query name="log.rowsByGroups">
+		<return alias="data" class="com.blackthorne.trader.eventlogger.db.Log" />
+	<![CDATA[
+		select * from `event_log` 
+		where `event_dt` >= DATE(NOW() - INTERVAL 3 DAY)
+		and `system_id` in (select `system_id` 
+							from `systems_groups` 
+							where UPPER(`group_name`) in (:groups)) 
+		order by `event_dt` desc;
+	]]>
 	</sql-query>
 
 	<sql-query name="log.rows.admin">
